@@ -9,9 +9,12 @@
 --      esa capa depende de PostgREST poblando esos roles y de Supabase Auth
 --      emitiendo el JWT que PostgREST traduce a "authenticated". Sin
 --      PostgREST en el stack, esos roles no existen en este Postgres y el
---      grant/revoke fallaria al aplicar el script. El backend se conectara
---      con su propio esquema de autenticacion (a definir en
---      xochiquetzal-backend), sin pasar por PostgREST.
+--      grant/revoke fallaria al aplicar el script. El control de acceso NO
+--      desaparece: se mueve por completo a la capa de aplicacion en
+--      xochiquetzal-backend (Spring Security + JWT propio, como en
+--      pehuame-backend) — este Postgres nunca se expone directo a un
+--      cliente no confiable; solo el backend, con credenciales propias, se
+--      conecta a el.
 --   2. `security definer` / `set search_path` removidos de
 --      apply_sync_event(): esos existian unicamente para blindar la funcion
 --      contra el rol `anon` de Supabase llamandola via PostgREST sin

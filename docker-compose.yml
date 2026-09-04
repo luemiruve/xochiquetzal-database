@@ -8,7 +8,9 @@ services:
       POSTGRES_USER: xochiquetzal
       POSTGRES_PASSWORD: xochiquetzal
     ports:
-      - "5432:5432"
+      # Bound to localhost only — this is a dev-only database with weak, well-known
+      # credentials; "5432:5432" would bind 0.0.0.0 and expose it to the whole LAN.
+      - "127.0.0.1:5432:5432"
     volumes:
       - xochiquetzal-db-data:/var/lib/postgresql/data
       - ./docker/init:/docker-entrypoint-initdb.d:ro
