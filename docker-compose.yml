@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: xochiquetzal-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: xochiquetzal
+      POSTGRES_USER: xochiquetzal
+      POSTGRES_PASSWORD: xochiquetzal
+    ports:
+      - "5432:5432"
+    volumes:
+      - xochiquetzal-db-data:/var/lib/postgresql/data
+      - ./docker/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U xochiquetzal -d xochiquetzal"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  xochiquetzal-db-data:
